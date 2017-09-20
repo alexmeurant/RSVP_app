@@ -17,13 +17,11 @@ function addLi() {
 
     // create and add "edit" button:
     const editButton = document.createElement('button');
-    editButton.className = 'edit';
     editButton.textContent = 'edit';
     ListItem.appendChild(editButton);
 
     // create and add "remove" button:
     const removeButton = document.createElement('button');
-    removeButton.className = 'remove';
     removeButton.textContent = 'remove';
     ListItem.appendChild(removeButton);
 
@@ -32,7 +30,7 @@ function addLi() {
 }
 
 form.addEventListener('submit', (e) => {
-    // prevent from loading the page after when submitting:
+    // prevent from loading the page when submitting:
     e.preventDefault();
     // add list Item and empty input form:
     addLi();
@@ -40,8 +38,12 @@ form.addEventListener('submit', (e) => {
 });
 
 ul.addEventListener('click', (event) => {
-    if (event.target.className === 'remove') {
+    if (event.target.textContent === 'remove') {
         const li = event.target.parentNode;
         ul.removeChild(li);
+    } else if (event.target.textContent === 'edit') {
+        event.target.textContent = 'save';
+    } else if (event.target.textContent === 'save') {
+        event.target.textContent = 'edit';
     }
 });
