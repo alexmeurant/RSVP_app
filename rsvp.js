@@ -5,7 +5,10 @@ const ul = document.getElementById('invitedList');
 function addLi() {
     // create a list item:
     const ListItem = document.createElement('li');
-    ListItem.textContent = input.value;
+    // create span and add input text inside:
+    const span = document.createElement('span');
+    span.textContent = input.value;
+    ListItem.appendChild(span);
 
     // create and add label with checkbox to the list item:
     const label = document.createElement('label');
@@ -38,12 +41,23 @@ form.addEventListener('submit', (e) => {
 });
 
 ul.addEventListener('click', (event) => {
+    const li = event.target.parentNode;
+    const span = li.querySelector('span');
+    const input = document.createElement('input');
+    input.type = 'text';
+    const inputTargeted = span.querySelector('input');
+
     if (event.target.textContent === 'remove') {
-        const li = event.target.parentNode;
         ul.removeChild(li);
     } else if (event.target.textContent === 'edit') {
+        span.appendChild(input);
         event.target.textContent = 'save';
     } else if (event.target.textContent === 'save') {
+        if (inputTargeted.value !== '') {
+            span.textContent = inputTargeted.value;
+        } else {
+            span.removeChild(inputTargeted);
+        }
         event.target.textContent = 'edit';
     }
 });
