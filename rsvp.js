@@ -24,3 +24,11 @@ function addLi() {
     // Add the list item to the unorderes list:
     ul.appendChild(ListItem);
 }
+
+form.addEventListener('submit', (e) => {
+    // prevent from loading the page after when submitting:
+    e.preventDefault();
+    // add list Item and empty input form:
+    addLi();
+    input.value = '';
+});
