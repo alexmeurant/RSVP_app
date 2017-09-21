@@ -43,21 +43,23 @@ form.addEventListener('submit', (e) => {
 ul.addEventListener('click', (event) => {
     const li = event.target.parentNode;
     const span = li.querySelector('span');
-    const input = document.createElement('input');
-    input.type = 'text';
-    const inputTargeted = span.querySelector('input');
+    const listItemInput = document.createElement('input');
+    listItemInput.type = 'text';
 
     if (event.target.textContent === 'remove') {
         ul.removeChild(li);
     } else if (event.target.textContent === 'edit') {
-        span.appendChild(input);
+        const label = li.querySelector('label');
+        li.insertBefore(listItemInput, label);
+        listItemInput.value = span.textContent;
+        li.removeChild(span);
         event.target.textContent = 'save';
     } else if (event.target.textContent === 'save') {
-        if (inputTargeted.value !== '') {
-            span.textContent = inputTargeted.value;
-        } else {
-            span.removeChild(inputTargeted);
-        }
+        const newSpan = document.createElement('span');
+        const listItemInput = li.querySelector('input');
+        li.insertBefore(newSpan, listItemInput);
+        newSpan.textContent = listItemInput.value;
+        li.removeChild(listItemInput);
         event.target.textContent = 'edit';
     }
 });
