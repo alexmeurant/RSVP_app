@@ -2,6 +2,37 @@ const form = document.getElementById('registrar');
 const input = form.querySelector('input');
 const ul = document.getElementById('invitedList');
 
+// create a filter div:
+const main = document.querySelector('.main');
+const filterDiv = document.createElement('div');
+const filterLabel = document.createElement('label');
+filterLabel.textContent = 'Hide invitees who do not confirm';
+const filterInput = document.createElement('input');
+filterInput.type = 'checkbox';
+filterLabel.appendChild(filterInput);
+filterDiv.appendChild(filterLabel);
+main.insertBefore(filterDiv, ul);
+
+// Select list items with no confirmation:
+function listItemNotConfirmed(value) {
+    const listItems = ul.children;
+    for (let i = 0; i < listItems.length; i++) {
+        const input = listItems[i].querySelector('input');
+        if (!input.checked) {
+            listItems[i].style.display = value;
+        } 
+    }
+}
+
+// Hides, if checked, list Items which invitees have not confirmed:
+filterInput.addEventListener('change', () => {
+    if (filterInput.checked) {
+        listItemNotConfirmed('none');
+    } else {
+        listItemNotConfirmed('');
+    }
+});
+
 function addLi() {
     // create a list item:
     const ListItem = document.createElement('li');
