@@ -2,7 +2,19 @@ const form = document.getElementById('registrar');
 const input = form.querySelector('input');
 const ul = document.getElementById('invitedList');
 
-// create a filter div:
+// Loads list Items when DOM is ready:
+document.addEventListener("DOMContentLoaded", () => {
+    const loadData = localStorage.getItem("listItems");
+    ul.innerHTML = loadData;
+});
+
+// Saves list Items:
+function saveData() {
+    const listItems = ul.innerHTML;
+    localStorage.setItem("listItems", listItems);
+}
+
+// creates a filter div:
 const main = document.querySelector('.main');
 const filterDiv = document.createElement('div');
 const filterLabel = document.createElement('label');
@@ -13,14 +25,16 @@ filterLabel.appendChild(filterInput);
 filterDiv.appendChild(filterLabel);
 main.insertBefore(filterDiv, ul);
 
-// Select list items with no confirmation:
+// Selects list items with no confirmation:
 function listItemNotConfirmed(value) {
     const listItems = ul.children;
     for (let i = 0; i < listItems.length; i++) {
         const input = listItems[i].querySelector('input');
         if (!input.checked) {
             listItems[i].style.display = value;
-        } 
+            // Local storage of the list items:
+            saveData();
+        }
     }
 }
 
@@ -64,10 +78,13 @@ function addLi() {
 }
 
 form.addEventListener('submit', (e) => {
-    // prevent from loading the page when submitting:
+    // prevents from loading the page when submitting:
     e.preventDefault();
-    // add list Item and empty input form:
+    // adds list Item and empty input form:
     addLi();
+    // Local storage of the list items:
+    saveData();
+    // Resets form input value:
     input.value = '';
 });
 
@@ -79,12 +96,16 @@ ul.addEventListener('click', (event) => {
 
     if (event.target.textContent === 'remove') {
         ul.removeChild(li);
+        // Local storage of the list items:
+        saveData();
+
     } else if (event.target.textContent === 'edit') {
         const label = li.querySelector('label');
         li.insertBefore(listItemInput, label);
         listItemInput.value = span.textContent;
         li.removeChild(span);
         event.target.textContent = 'save';
+
     } else if (event.target.textContent === 'save') {
         const newSpan = document.createElement('span');
         const listItemInput = li.querySelector('input');
@@ -92,5 +113,7 @@ ul.addEventListener('click', (event) => {
         newSpan.textContent = listItemInput.value;
         li.removeChild(listItemInput);
         event.target.textContent = 'edit';
+        // Local storage of the list items:
+        saveData();
     }
 });
